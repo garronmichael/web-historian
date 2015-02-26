@@ -13,9 +13,19 @@ exports.headers = headers = {
 exports.serveAssets = function(res, asset, callback) {
   // Write some code here that helps serve up your static files!
   // (Static files are things like html (yours or archived from others...), css, or anything that doesn't change often.)
-  res.writeHead(200, headers);
   fs.readFile(asset, callback);
 
+};
+
+exports.collectData = function(request, callback){
+  var data = "";
+  request.on('data', function(chunk){
+    data += chunk;
+  });
+  request.on('end', function(){
+    data = data.slice(4) + '\n';
+    callback(data);
+  });
 };
 
 

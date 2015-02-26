@@ -10,20 +10,30 @@ exports.handleRequest = function (req, res) {
     'GET': function(req, res) {
       var asset;
        if(req.url === '/') {
-        asset = path.resolve('web/public', 'index.html');
+        asset = path.join(__dirname, '/public/index.html');
       } else {
-        asset = path.resolve('web', '../archives/sites' + req.url);
+        asset = path.join(__dirname, '../archives/sites', req.url);
       }
-      console.log(asset);
       httpHelpers.serveAssets(res, asset, function (err, data) {
         // if (err) {
         //   throw err;
         // }
+        res.writeHead(200, headers);
         res.end(data);
       });
-    },
-    'POST': function () {
 
+    },
+    'POST': function (req, res) {
+      httpHelpers.collectData(req, function(site) {
+        archive.addUrlToList(site, archive.paths.list, function (err, site) {
+          if (err) {
+            throw err;
+          }
+
+          res.writeHead(302, headers);
+          res.end('Posted: ' + site);
+        });
+      });
     }
   };
 
