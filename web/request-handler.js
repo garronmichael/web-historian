@@ -15,11 +15,13 @@ exports.handleRequest = function (req, res) {
         asset = path.join(__dirname, '../archives/sites', req.url);
       }
       httpHelpers.serveAssets(res, asset, function (err, data) {
-        // if (err) {
-        //   throw err;
-        // }
-        res.writeHead(200, headers);
-        res.end(data);
+        if (err) {
+          res.writeHead(404, headers);
+          res.end(data);
+        } else {
+          res.writeHead(200, headers);
+          res.end(data);
+        }
       });
 
     },
