@@ -8,10 +8,9 @@ exports.handleRequest = function (req, res) {
 
   if (req.method === 'GET') {
 
-
-    httpHelpers.serveAssets(res, path.resolve('/users', 'index.html'), function (err, data) {
-
-      console.log(path.resolve('public', 'index.html'));
+    var asset = path.resolve('web', 'public', 'index.html');
+    console.log(asset);
+    httpHelpers.serveAssets(res, asset, function (err, data) {
       // if (err) {
       //   throw err;
       // }
