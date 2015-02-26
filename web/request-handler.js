@@ -25,7 +25,7 @@ exports.handleRequest = function (req, res) {
     },
     'POST': function (req, res) {
       httpHelpers.collectData(req, function(site) {
-        archive.addUrlToList(site, archive.paths.list, function (err, site) {
+        archive.addUrlToList(archive.paths.list, site, function (err, site) {
           if (err) {
             throw err;
           }

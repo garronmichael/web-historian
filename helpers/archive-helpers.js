@@ -31,7 +31,8 @@ exports.readListOfUrls = function(){
 exports.isUrlInList = function(){
 };
 
-exports.addUrlToList = function(){
+exports.addUrlToList = function(file, url, callback){
+  fs.appendFile(file, url, callback)
 };
 
 exports.isURLArchived = function(){
