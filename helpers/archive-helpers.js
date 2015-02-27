@@ -35,15 +35,33 @@ exports.readListOfUrls = function(callback, file) {
   });
 };
 
-exports.isUrlInList = function(){
+exports.isUrlInList = function(url, callback){
+  exports.readListOfUrls(function(sites) {
+    var found = _.any(sites, function(site, i) {
+         return site.match(url)
+       });
+       callback(found);
+  });
 };
 
-exports.addUrlToList = function(file, url, callback){
-  fs.appendFile(file, url, callback)
+exports.addUrlToList = function(url, callback){
+  fs.appendFile(exports.paths.list, url+'\n', function(err, file){
+    callback();
+  });
 };
 
-exports.isURLArchived = function(){
+exports.isURLArchived = function(url, callback){
+  var sitePath =  path.join(exports.paths.archivedSites, url);
+
+  fs.exists(sitePath, function(exists) {
+    callback(exists);
+  });
 };
 
-exports.downloadUrls = function(){
+exports.downloadUrls = function(urls){
+  _.each(urls, function(url) {
+    if(!url){ return; }
+    request('http://' + url).pipe(fs.createWriteStream(exports.paths.archivedSites + "/" + url));
+  });
+  return true;
 };
